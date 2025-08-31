@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pricing.Infrastructure", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pricing.Api", "Pricing.Api\Pricing.Api.csproj", "{E7391DB2-2575-4639-B7AE-CA828B5A2636}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pricing.Application.Tests", "Pricing.Application.Tests\Pricing.Application.Tests.csproj", "{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{E7391DB2-2575-4639-B7AE-CA828B5A2636}.Release|x64.Build.0 = Release|Any CPU
 		{E7391DB2-2575-4639-B7AE-CA828B5A2636}.Release|x86.ActiveCfg = Release|Any CPU
 		{E7391DB2-2575-4639-B7AE-CA828B5A2636}.Release|x86.Build.0 = Release|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Debug|x64.Build.0 = Debug|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Debug|x86.Build.0 = Debug|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Release|x64.Build.0 = Release|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Release|x86.ActiveCfg = Release|Any CPU
+		{EE3946AA-2C00-43C4-8CAB-5102A637DCF0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
