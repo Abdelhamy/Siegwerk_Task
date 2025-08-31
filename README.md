@@ -7,10 +7,11 @@ A comprehensive .NET 9 Web API for managing product pricing across multiple supp
 This project follows **Clean Architecture** principles with **Domain-Driven Design (DDD)** patterns:
 
 ```
-├── Pricing.Api/          # API Layer (Controllers/Endpoints)
-├── Pricing.Application/   # Application Layer (Use Cases/Handlers)
-├── Pricing.Domain/       # Domain Layer (Entities/Value Objects)
-└── Pricing.Infrastructure/ # Infrastructure Layer (Data Access/External Services)
+├── Pricing.Api/                # API Layer (Controllers/Endpoints)
+├── Pricing.Application/         # Application Layer (Use Cases/Handlers)
+├── Pricing.Domain/             # Domain Layer (Entities/Value Objects)
+├── Pricing.Infrastructure/     # Infrastructure Layer (Data Access/External Services)
+└── Pricing.Application.Tests/  # Unit & Integration Tests
 ```
 
 ## 🚀 Features
@@ -35,6 +36,7 @@ This project follows **Clean Architecture** principles with **Domain-Driven Desi
 - **Comprehensive Logging**: Structured logging with Serilog-style patterns
 - **OpenAPI/Swagger**: Complete API documentation
 - **Health Checks**: Built-in health monitoring
+- **Comprehensive Testing**: Unit and integration tests with high coverage
 
 ## 🛠️ Technology Stack
 
@@ -44,6 +46,9 @@ This project follows **Clean Architecture** principles with **Domain-Driven Desi
 - **SQL Server**: Primary database
 - **OpenAPI/Swagger**: API documentation
 - **CORS**: Cross-origin resource sharing support
+- **xUnit**: Testing framework
+- **Moq**: Mocking framework for unit tests
+- **FluentAssertions**: Fluent test assertions
 
 ## 📋 Prerequisites
 
@@ -65,7 +70,7 @@ Update the connection string in `appsettings.json`:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=PricingDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=PricingDb_Dev;Trusted_Connection=true;MultipleActiveResultSets=true;TrustServerCertificate=true"
   }
 }
 ```
@@ -243,12 +248,14 @@ public class PriceListEntry
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=PricingDb;Trusted_Connection=true"
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=PricingDb_Dev;Trusted_Connection=true;MultipleActiveResultSets=true;TrustServerCertificate=true"
   },
   "Logging": {
     "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
+      "Default": "Debug",
+      "Microsoft.AspNetCore": "Information",
+      "Microsoft.EntityFrameworkCore": "Information",
+      "Pricing": "Debug"
     }
   }
 }
@@ -260,6 +267,75 @@ public class PriceListEntry
 
 ## 🧪 Testing
 
+The project includes comprehensive unit and integration tests using modern .NET testing practices.
+
+### Test Framework & Tools
+- **xUnit**: Primary testing framework
+- **Moq**: Mocking framework for isolating dependencies
+- **FluentAssertions**: Expressive and fluent test assertions
+- **Coverlet**: Code coverage analysis
+
+### Test Structure
+```
+Pricing.Application.Tests/
+├── UseCases/
+│   └── Pricing/
+│       └── Queries/
+│           └── GetBestPrice/
+│               ├── GetBestPriceHandlerTests.cs          # Unit tests
+│               ├── GetBestPriceHandlerIntegrationTests.cs # Integration tests
+│               └── GetBestPriceTestDataHelper.cs        # Test data helpers
+└── GlobalUsings.cs
+```
+
+### Running Tests
+
+#### Run All Tests
+```bash
+dotnet test
+```
+
+#### Run Tests with Coverage
+```bash
+dotnet test --collect:"XPlat Code Coverage"
+```
+
+#### Run Specific Test Project
+```bash
+dotnet test Pricing.Application.Tests
+```
+
+#### Run Tests in Watch Mode
+```bash
+dotnet watch test --project Pricing.Application.Tests
+```
+
+### Test Categories
+
+#### Unit Tests
+- **Business Logic**: Domain entities and value objects
+- **Application Handlers**: Use case implementations with mocked dependencies
+- **Service Logic**: Individual service components in isolation
+
+#### Integration Tests
+- **End-to-End Scenarios**: Complete request flows through the application
+- **Database Integration**: Repository and data access layer testing
+- **External Service Integration**: Currency conversion and external APIs
+
+### Test Coverage
+The test suite covers:
+- ✅ **Best Price Calculation Logic**: All pricing scenarios and tie-breaking rules
+- ✅ **Currency Conversion**: Multi-currency support and rate conversion
+- ✅ **Validation Logic**: Input validation and business rule enforcement
+- ✅ **Domain Models**: Entity behavior and value object validation
+
+### Sample Test Cases
+- Single price candidate selection
+- Multiple candidates with lowest price selection
+- Preferred supplier tie-breaking
+- Currency conversion scenarios
+- No candidates found handling
+- Invalid input validation
 
 ### Test Data
 Use the `/dev/seed` endpoint to populate the database with sample data:
@@ -289,6 +365,10 @@ PartA/
 │   ├── Common/Interfaces/ & Models/
 │   ├── Contracts/
 │   └── Services/
+├── Pricing.Application.Tests/
+│   ├── UseCases/
+│   │   └── Pricing/Queries/GetBestPrice/
+│   └── GlobalUsings.cs
 ├── Pricing.Domain/
 │   ├── Entities/
 │   ├── ValueObjects/
@@ -301,7 +381,6 @@ PartA/
     │   └── PricingDbContext.cs
     ├── Extensions/
     └── Rates/
-```
 
 
 
