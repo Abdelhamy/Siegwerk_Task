@@ -1,0 +1,18 @@
+# Docker files
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Docker volumes
+sql_data/
+
+# Build artifacts
+**/bin/
+**/obj/
+
+# User secrets
+**/appsettings.local.json
+
+# Logs
+logs/
+*.log

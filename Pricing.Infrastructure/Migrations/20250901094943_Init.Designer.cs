@@ -12,7 +12,7 @@ using Pricing.Infrastructure.Persistence;
 namespace Pricing.Infrastructure.Migrations
 {
     [DbContext(typeof(PricingDbContext))]
-    [Migration("20250830085316_Init")]
+    [Migration("20250901094943_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -39,10 +39,18 @@ namespace Pricing.Infrastructure.Migrations
                         .HasColumnType("rowversion")
                         .HasColumnName("RowVersion");
 
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Sku")
+                        .HasDatabaseName("IX_PriceListEntries_Sku");
 
                     b.HasIndex("SupplierId")
                         .HasDatabaseName("IX_PriceListEntries_SupplierId");
@@ -73,6 +81,11 @@ namespace Pricing.Infrastructure.Migrations
                         .HasColumnType("rowversion")
                         .HasColumnName("RowVersion");
 
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("UnitOfMeasure")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -85,6 +98,10 @@ namespace Pricing.Infrastructure.Migrations
 
                     b.HasIndex("Name")
                         .HasDatabaseName("IX_Products_Name");
+
+                    b.HasIndex("Sku")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Products_Sku");
 
                     b.HasIndex("UnitOfMeasure")
                         .HasDatabaseName("IX_Products_UnitOfMeasure");
@@ -140,28 +157,6 @@ namespace Pricing.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Pricing.Domain.ValueObjects.ProductSku", "Sku", b1 =>
-                        {
-                            b1.Property<int>("PriceListEntryId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)")
-                                .HasColumnName("Sku");
-
-                            b1.HasKey("PriceListEntryId");
-
-                            b1.HasIndex("Value")
-                                .HasDatabaseName("IX_PriceListEntries_Sku");
-
-                            b1.ToTable("PriceListEntries");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PriceListEntryId");
-                        });
-
                     b.OwnsOne("Pricing.Domain.ValueObjects.DateRange", "ValidityPeriod", b1 =>
                         {
                             b1.Property<int>("PriceListEntryId")
@@ -198,37 +193,21 @@ namespace Pricing.Infrastructure.Migrations
                                 .HasColumnType("decimal(18,4)")
                                 .HasColumnName("PriceAmount");
 
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasMaxLength(3)
+                                .HasColumnType("nvarchar(3)")
+                                .HasColumnName("Currency");
+
                             b1.HasKey("PriceListEntryId");
+
+                            b1.HasIndex("Currency")
+                                .HasDatabaseName("IX_PriceListEntries_Currency");
 
                             b1.ToTable("PriceListEntries");
 
                             b1.WithOwner()
                                 .HasForeignKey("PriceListEntryId");
-
-                            b1.OwnsOne("Pricing.Domain.ValueObjects.Currency", "Currency", b2 =>
-                                {
-                                    b2.Property<int>("MoneyPriceListEntryId")
-                                        .HasColumnType("int");
-
-                                    b2.Property<string>("Code")
-                                        .IsRequired()
-                                        .HasMaxLength(3)
-                                        .HasColumnType("nvarchar(3)")
-                                        .HasColumnName("Currency");
-
-                                    b2.HasKey("MoneyPriceListEntryId");
-
-                                    b2.HasIndex("Code")
-                                        .HasDatabaseName("IX_PriceListEntries_Currency");
-
-                                    b2.ToTable("PriceListEntries");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("MoneyPriceListEntryId");
-                                });
-
-                            b1.Navigation("Currency")
-                                .IsRequired();
                         });
 
                     b.OwnsOne("Pricing.Domain.ValueObjects.Quantity", "MinimumQuantity", b1 =>
@@ -257,41 +236,9 @@ namespace Pricing.Infrastructure.Migrations
                     b.Navigation("Price")
                         .IsRequired();
 
-                    b.Navigation("Sku")
-                        .IsRequired();
-
                     b.Navigation("Supplier");
 
                     b.Navigation("ValidityPeriod")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Pricing.Domain.Entities.Product", b =>
-                {
-                    b.OwnsOne("Pricing.Domain.ValueObjects.ProductSku", "Sku", b1 =>
-                        {
-                            b1.Property<int>("ProductId")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(64)
-                                .HasColumnType("nvarchar(64)")
-                                .HasColumnName("Sku");
-
-                            b1.HasKey("ProductId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique()
-                                .HasDatabaseName("IX_Products_Sku");
-
-                            b1.ToTable("Products");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.Navigation("Sku")
                         .IsRequired();
                 });
 

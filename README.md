@@ -52,20 +52,81 @@ This project follows **Clean Architecture** principles with **Domain-Driven Desi
 
 ## 📋 Prerequisites
 
-- .NET 9 SDK
-- SQL Server (LocalDB/Express/Full)
+- .NET 9 SDK (for local development)
+- **Docker Desktop** (for containerized deployment)
+- SQL Server (LocalDB/Express/Full) - *for local development only*
 - Visual Studio 2022 or VS Code
 - Git
 
 ## 🚀 Getting Started
 
-### 1. Clone the Repository
+You can run this application in two ways: **locally** or with **Docker** (recommended for simplicity).
+
+### Option 1: 🐳 Docker Deployment (Recommended)
+
+This is the easiest way to run the application. Docker will handle all dependencies including SQL Server.
+
+#### Prerequisites for Docker
+- Docker Desktop installed and running
+- Git
+
+#### Steps
+1. **Clone the Repository**
 ```bash
-git clone <repository-url>
-cd PartA
+git clone https://github.com/Abdelhamy/Siegwerk_Task
+cd Siegwerk_Task
 ```
 
-### 2. Database Setup
+2. **Run with Docker**
+
+**On Windows:**
+```bash
+start-docker.bat
+```
+
+**On Linux/Mac:**
+```bash
+chmod +x start-docker.sh
+./start-docker.sh
+```
+
+**Or manually:**
+```bash
+docker-compose up --build
+```
+
+3. **Access the Application**
+- **API**: http://localhost:5000
+- **Swagger UI**: http://localhost:5000
+- **SQL Server**: localhost:1433 (sa/YourStrong@Passw0rd)
+
+4. **Seed Sample Data**
+```bash
+curl -X POST "http://localhost:5000/dev/seed"
+```
+
+5. **Stop the Application**
+```bash
+docker-compose down
+```
+
+### Option 2: 💻 Local Development
+
+For development and debugging, you can run the application locally.
+
+#### Prerequisites for Local Development
+- .NET 9 SDK
+- SQL Server (LocalDB/Express/Full)
+
+#### Steps
+
+1. **Clone the Repository**
+```bash
+git clone https://github.com/Abdelhamy/Siegwerk_Task
+cd Siegwerk_Task
+```
+
+2. **Database Setup**
 Update the connection string in `appsettings.json`:
 ```json
 {
@@ -75,18 +136,18 @@ Update the connection string in `appsettings.json`:
 }
 ```
 
-### 3. Database Migration
+3. **Database Migration**
 ```bash
 dotnet ef database update --project Pricing.Infrastructure --startup-project Pricing.Api
 ```
 
-### 4. Seed Sample Data (Optional)
+4. **Seed Sample Data (Optional)**
 ```bash
 # Start the application first, then:
 curl -X POST "https://localhost:7001/dev/seed"
 ```
 
-### 5. Run the Application
+5. **Run the Application**
 ```bash
 dotnet run --project Pricing.Api
 ```

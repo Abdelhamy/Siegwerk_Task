@@ -17,7 +17,7 @@ namespace Pricing.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Sku = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Sku = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     UnitOfMeasure = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     HazardClass = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -52,7 +52,7 @@ namespace Pricing.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SupplierId = table.Column<int>(type: "int", nullable: false),
-                    Sku = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    Sku = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ValidFrom = table.Column<DateOnly>(type: "date", nullable: false),
                     ValidTo = table.Column<DateOnly>(type: "date", nullable: true),
                     PriceAmount = table.Column<decimal>(type: "decimal(18,4)", nullable: false),

@@ -73,5 +73,9 @@ app.MapApiEndpoints();
 
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 logger.LogInformation("Pricing API started successfully on {Environment} environment", app.Environment.EnvironmentName);
-
+using (var scope = app.Services.CreateScope())
+{
+    var scopedProvider = scope.ServiceProvider;
+    await DbSeeder.Seed(scopedProvider, app.Environment.EnvironmentName);
+}
 app.Run();

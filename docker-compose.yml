@@ -1,0 +1,55 @@
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: pricing-sqlserver
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: _@Passw0rd
+      MSSQL_PID: Express
+    ports:
+      - "2434:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - pricing-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P _@Passw0rd -C -Q 'SELECT 1'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Pricing API
+  pricing-api:
+    build:
+      context: .    
+      dockerfile: Dockerfile
+    container_name: pricing-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PricingDb_Dev;User Id=sa;Password=_@Passw0rd;TrustServerCertificate=true;MultipleActiveResultSets=true
+    ports:
+      - "5000:8080"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - pricing-network
+    command: >
+      sh -c "
+        echo 'Waiting for SQL Server to be ready...'
+        sleep 30
+        echo 'Running database migrations...'
+        dotnet ef database update --project /src/Pricing.Infrastructure --startup-project /src/Pricing.Api || true
+        echo 'Starting application...'
+        dotnet Pricing.Api.dll
+      "
+
+volumes:
+  sql_data:
+
+networks:
+  pricing-network:
+    driver: bridge
