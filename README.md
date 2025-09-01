@@ -98,7 +98,7 @@ docker-compose up --build
 3. **Access the Application**
 - **API**: http://localhost:5000
 - **Swagger UI**: http://localhost:5000
-- **SQL Server**: localhost:1433 (sa/_@Passw0rd)
+- **SQL Server**: localhost:2434 (sa/_@Passw0rd)
 
 4. **Seed Sample Data**
 ```bash
